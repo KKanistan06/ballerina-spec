@@ -21,8 +21,7 @@ This manual approach presents several significant challenges:
 
 1.  **Elevated Effort:** The development of a single robust connector typically necessitates 4-6 weeks of dedicated engineering time.
 2.  **Inconsistency:** Variations in how different developers implement interoperability patterns result in a fragmented and non-uniform ecosystem.
-3.  **Maintenance Burden:** Updates to the upstream SDK require manual,
-    time-consuming code adjustments.
+3.  **Maintenance Burden:** Updates to the upstream SDK require manual, time-consuming code adjustments.
 
 The present time offers a viable opportunity for this solution, owing to the maturity of Large Language Model (LLM) technologies for code generation and the escalating demand for connectors. By automating the bridge logic, we can significantly accelerate the expansion of the Ballerina ecosystem, thereby enabling internal developers and external contributors to integrate robust SDKs both rapidly and reliably.
 
@@ -36,11 +35,11 @@ The present time offers a viable opportunity for this solution, owing to the mat
 ## Non-Goals
 
 -   This proposal is not intended to supersede the manual design of the high-level API surface for exceptionally complex, non-standard SDKs; however, it aims to deliver a starting point that is 90% complete.
--   The project\'s scope is strictly limited to generating Ballerina connectors from Java SDKs; support for other language SDKs is currently excluded. However, the architecture has been designed with pluggability to accommodate non-Java SDKs in the future, upon the availability of Ballerina language support for the corresponding Foreign Function Interface (FFI).
+-   The project's scope is strictly limited to generating Ballerina connectors from Java SDKs; support for other language SDKs is currently excluded. However, the architecture has been designed with pluggability to accommodate non-Java SDKs in the future, upon the availability of Ballerina language support for the corresponding Foreign Function Interface (FFI).
 
 ## Design
 
-The solution\'s foundation is a pair of sequential GitHub Actions workflows encompassing seven specialized AI modules. The system adheres to a \"Generate and Validate\" architectural paradigm, wherein AI-generated code undergoes immediate compilation, and any resulting errors are subsequently channeled back into the model for rectification.
+The solution's foundation is a pair of sequential GitHub Actions workflows encompassing seven specialized AI modules. The system adheres to a "Generate and Validate" architectural paradigm, wherein AI-generated code undergoes immediate compilation, and any resulting errors are subsequently channeled back into the model for rectification.
 
 ### System Components
 
@@ -119,6 +118,6 @@ The feature, specifically the automation pipeline, will be rigorously evaluated 
 
 ## Dependencies
 
--   GitHub Actions: The workflow is dependent on GitHub\'s Continuous Integration/Continuous Delivery (CI/CD) environment.
+-   GitHub Actions: The workflow is dependent on GitHub's Continuous Integration/Continuous Delivery (CI/CD) environment.
 -   Large Language Model.
 -   Ballerina Compiler: This component is mandatory within the runtime environment to facilitate the validation loop of the Code Fixer.
