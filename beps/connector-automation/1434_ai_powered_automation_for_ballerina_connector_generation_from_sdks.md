@@ -3,7 +3,7 @@
 -   Authors: Kanistan Kanesalingam
 -   Reviewed by: Danesh Kuruppu, Tharmigan Krishnananthalingam
 -   Created date: 2026-02-13
--   Updated date: 2026-02-13
+-   Updated date: 2026-02-17
 -   Issue: [1434](https://github.com/ballerina-platform/ballerina-spec/issues/1434)
 -   State: InProgress
 
@@ -45,14 +45,14 @@ The solution's foundation is a pair of sequential GitHub Actions workflows encom
 
 1.  **SDK Analyzer:** This module performs a comprehensive analysis of the input SDK to extract foundational API structures, method signatures, and type definitions, serving as the definitive source of truth for the integration.
 2.  **Additional SDK Information Provider (Optional):** Designed to augment the core analysis, this distinct module aggregates semantic context from supporting sources, specifically Code Examples and docs. It enriches the upstream data flow by supplying idiomatic usage patterns and descriptive metadata, thereby enhancing the fidelity of downstream API specification derivation, connector example generation, and documentation synthesis.
-3.  **Specification Generator:** Following the analysis, this module generates a formal API Specification Document for the Ballerina connector. This document serves as a blueprint, outlining the proposed client initialization logic and the signatures for the most frequently utilized client methods. Importantly, it excludes implementation-specific details, thereby facilitating a streamlined human review process.
-4.  **Connector Generator (Client & Native Adapter):** This module accepts the *approved* (and potentially revised) Specification document to generate the actual connector implementation. This process is bifurcated into two distinct sub-tasks:
-    * a.  **Ballerina Client Generator:** Generates the Ballerina client, including Foreign Function Interface (FFI) definitions that align precisely with the established specification.
-    * b.  **Native Adapter Generator:** Generates the corresponding language Native Adapter, incorporating the necessary type conversion and error handling logic.
-5.  **Code Fixer:** A supporting utility module invoked during the generation phase. It is responsible for compiling the generated artifacts, analyzing ensuing compiler error messages, and iteratively applying corrections to resolve syntax or type mismatches until a successful build is achieved.
-6.  **Test Generator:** This module analyzes the completed connector to automatically produce a comprehensive test suite. This suite encompasses tests for both successful method execution and various error-handling scenarios.
-7.  **Example Generator:** Synthesizes practical, compilable code snippets that clearly demonstrate real-world usage paradigms for the newly developed connector.
-8.  **Document Generator:** Systematically scans the final codebase to generate user-centric Markdown documentation, effectively translating complex technical concepts into explanations centered on Ballerina principles.
+3.  **API Specification Generator:** Following the analysis, this module takes as input the extracted metadata, Ballerina best practices, and predefined mapping rules that describe how SDK concepts should be represented in Ballerina. Using these inputs, it generates a formal API Specification Document for the Ballerina connector. This document serves as a blueprint, outlining the proposed client initialization logic and the signatures for the most frequently utilized client methods. Importantly, it excludes implementation-specific details, thereby facilitating a streamlined human review process.
+5.  **Connector Generator (Client & Native Adapter):** This module accepts the approved (and potentially revised) Specification document to generate the actual connector implementation. This process is bifurcated into two distinct sub-tasks:
+    *   **Ballerina Client Generator:** Generates the Ballerina client, including Foreign Function Interface (FFI) definitions that align precisely with the established specification.
+    *   **Native Adapter Generator:** Generates the corresponding language Native Adapter, incorporating the necessary type conversion and error handling logic.
+6.  **Code Fixer:** A supporting utility module invoked during the generation phase. It is responsible for compiling the generated artifacts, analyzing ensuing compiler error messages, and iteratively applying corrections to resolve syntax or type mismatches until a successful build is achieved.
+7.  **Test Generator:** This module analyzes the completed connector to automatically produce a comprehensive test suite. This suite encompasses tests for both successful method execution and various error-handling scenarios.
+8.  **Example Generator:** Synthesizes practical, compilable code snippets that clearly demonstrate real-world usage paradigms for the newly developed connector.
+9.  **Document Generator:** Systematically scans the final codebase to generate user-centric Markdown documentation, effectively translating complex technical concepts into explanations centered on Ballerina principles.
 
 ### Workflow Architecture
 
@@ -74,7 +74,7 @@ The process is executed in a structured Review-Then-Generate sequence, comprisin
 **Phase 3: Implementation Generation**
 
 -   The merging of the specification Pull Request triggers the subsequent workflow.
--   The Connector Generator utilizes the *modified* and approved Specification Document as input.
+-   The Connector Generator utilizes the modified and approved Specification Document as input.
 -   It generates the complete Ballerina client and the corresponding Native Adaptor logic to precisely align with the approved specification.
 -   The Code Fixer module is employed to ensure the generated code achieves successful compilation.
 
