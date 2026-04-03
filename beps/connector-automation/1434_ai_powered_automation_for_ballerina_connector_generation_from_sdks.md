@@ -45,7 +45,7 @@ The solution's foundation is a pair of sequential GitHub Actions workflows encom
 
 1.  **SDK Analyzer:** This module performs a comprehensive analysis of the input SDK to extract foundational API structures, method signatures, and type definitions, serving as the definitive source of truth for the integration.
 2.  **Additional SDK Information Provider (Optional):** Designed to augment the core analysis, this distinct module aggregates semantic context from supporting sources, specifically Code Examples and docs. It enriches the upstream data flow by supplying idiomatic usage patterns and descriptive metadata, thereby enhancing the fidelity of downstream API specification derivation, connector example generation, and documentation synthesis.
-3.  **API Specification Generator:** Following the analysis, this module takes as input the extracted metadata, Ballerina best practices, and predefined mapping rules that describe how SDK concepts should be represented in Ballerina. Using these inputs, it generates a formal API Specification Document for the Ballerina connector. This document serves as a blueprint, outlining the proposed client initialization logic and the signatures for the most frequently utilized client methods. Importantly, it excludes implementation-specific details, thereby facilitating a streamlined human review process.
+3.  **API Specification Generator:** Following the analysis, this module first transforms the extracted metadata into a defined, Ballerina-specific structured JSON to establish a unified Intermediate Representation (IR). Taking this IR as a deterministic source of truth—alongside Ballerina best practices and predefined mapping rules—it generates a formal API Specification Document for the Ballerina connector. This document serves as a blueprint, outlining the proposed client initialization logic and the signatures for the most frequently utilized client methods. Importantly, it excludes implementation-specific details, thereby facilitating a streamlined human review process, effective change management, and proper version controlling.
 5.  **Connector Generator (Client & Native Adapter):** This module accepts the approved (and potentially revised) Specification document to generate the actual connector implementation. This process is bifurcated into two distinct sub-tasks:
     *   **Ballerina Client Generator:** Generates the Ballerina client, including Foreign Function Interface (FFI) definitions that align precisely with the established specification.
     *   **Native Adapter Generator:** Generates the corresponding language Native Adapter, incorporating the necessary type conversion and error handling logic.
@@ -62,8 +62,8 @@ The process is executed in a structured Review-Then-Generate sequence, comprisin
 
 -   The workflow is initiated upon the addition of a new SDK.
 -   The Multi-Source SDK Analyzer conducts a thorough scan of the input.
--   The Specification Generator produces the formal Specification document (API Blueprint).
--   **Output:** An initial Pull Request is raised, containing exclusively the generated Specification Document.
+-   The Specification Generator converts the extracted metadata into the Ballerina-specific Intermediate Representation (IR) and uses it to produce the formal Specification document (API Blueprint).
+- **Output:** An initial Pull Request is raised, containing both the Intermediate Representation (IR) JSON and the generated Specification Document.
 
 **Phase 2: Manual Review (Human-in-the-Loop)**
 
@@ -74,7 +74,7 @@ The process is executed in a structured Review-Then-Generate sequence, comprisin
 **Phase 3: Implementation Generation**
 
 -   The merging of the specification Pull Request triggers the subsequent workflow.
--   The Connector Generator utilizes the modified and approved Specification Document as input.
+-   The Connector Generator utilizes the modified and approved Specification Document, Intermediate Representation JSON and the metadata JSON as its deterministic inputs.
 -   It generates the complete Ballerina client and the corresponding Native Adaptor logic to precisely align with the approved specification.
 -   The Code Fixer module is employed to ensure the generated code achieves successful compilation.
 
